@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShepuAutoM | Precision Messaging Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #111118;
+            --bg-card: rgba(25, 25, 45, 0.75);
+            --primary: #7c3aed;
+            --primary-light: #c4b5fd;
+            --primary-dark: #5b21b6;
+            --accent: #a78bfa;
+            --gradient: linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #8b5cf6 100%);
+            --gradient-glow: linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(167,139,250,0.08) 100%);
+            --text-main: #e2e8f0;
+            --text-muted: #a0aec0;
+            --border: rgba(167, 139, 250, 0.14);
+            --glow: 0 0 14px rgba(124, 58, 237, 0.16);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Outfit', system-ui, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: var(--gradient-glow);
+            opacity: 0.18;
+            z-index: -2;
+            animation: gradientFlow 28s ease infinite;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 32px 0 100px;
+        }
+        .logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 16px;
+            transition: all 0.5s ease;
+            box-shadow: var(--glow);
+        }
+        .logo:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 24px rgba(124,58,237,0.28);
+        }
+        .brand-text h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34,197,94,0.1);
+            color: #86efac;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            border: 1px solid rgba(34,197,94,0.2);
+            backdrop-filter: blur(8px);
+        }
+        .pulse {
+            width: 10px; height: 10px;
+            background: #86efac;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #86efac;
+            animation: pulse 2.4s infinite;
+        }
+        @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } }
+
+        /* Button styles (unchanged) */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gradient);
+            color: white;
+            font-weight: 700;
+            padding: 16px 40px;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: var(--glow);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0.12) 55%, transparent 65%);
+            transform: translateX(-120%) skewX(-20deg);
+            transition: transform 0.9s ease;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 18px;
+            background: var(--gradient);
+            z-index: -1;
+            filter: blur(12px);
+            opacity: 0.4;
+            transition: all 0.5s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 16px 36px -8px rgba(124,58,237,0.55);
+        }
+        .btn-primary:hover::before {
+            transform: translateX(120%) skewX(-20deg);
+        }
+        .btn-primary:hover::after {
+            opacity: 0.75;
+            filter: blur(18px);
+        }
+
+        .platform-tag {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(12px);
+            padding: 10px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(167,139,250,0.22);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            color: var(--text-main);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .platform-tag:hover {
+            background: rgba(124,58,237,0.14);
+            border-color: var(--primary-light);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px -8px rgba(124,58,237,0.35);
+        }
+
+        #fab {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 999;
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--glow), 0 12px 40px rgba(0,0,0,0.45);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        #fab:hover {
+            transform: scale(1.15) translateY(-6px);
+            box-shadow: 0 20px 50px -10px rgba(124,58,237,0.6);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 0 120px;
+        }
+        .hero h2 {
+            font-size: clamp(3.2rem, 8vw, 5.8rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 28px;
+            background: linear-gradient(to bottom right, #f1f5f9 30%, #c4b5fd 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1.5px;
+        }
+        .hero p {
+            font-size: 1.32rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto 48px;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin: 60px 0;
+        }
+        .stat-item {
+            text-align: center;
+            min-width: 140px;
+        }
+        .stat-number {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: var(--primary-light);
+            display: block;
+            text-shadow: 0 0 16px rgba(124,58,237,0.25);
+        }
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        .glass-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 36px;
+            padding: 56px 48px;
+            margin: 80px 0;
+            box-shadow: var(--glow), inset 0 0 30px rgba(0,0,0,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-middle, .download-bottom {
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .download-bottom {
+            background: rgba(124,58,237,0.08);
+            border: 1px solid rgba(124,58,237,0.25);
+            border-radius: 32px;
+            padding: 60px 30px;
+            max-width: 720px;
+            margin: 100px auto;
+        }
+
+        .download-bottom h3 {
+            font-size: 2.1rem;
+            margin-bottom: 16px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 40px; text-align: center; }
+            .stats-container { gap: 40px; }
+            .glass-panel { padding: 40px 24px; }
+            #fab { bottom: 24px; right: 24px; width: 64px; height: 64px; }
+            .btn-primary { padding: 14px 32px; font-size: 0.98rem; }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://drive.google.com/file/d/1NY87_z2ZG4lAOijiDplneB8TkOd5PKGq/view" target="_blank" id="fab" title="Download Now">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+    </a>
+
+    <div class="container">
+        <header data-aos="fade-down" data-aos-duration="900">
+            <div style="display:flex; align-items:center; gap:16px;">
+                <img src="sam.png" alt="ShepuAutoM" class="logo" onerror="this.src='https://via.placeholder.com/100/7c3aed/fff?text=SA'">
+                <div>
+                    <h1>ShepuAutoM</h1>
+                    <div class="status-badge">
+                        <span class="pulse"></span>
+                        Always Online
+                    </div>
+                </div>
+            </div>
+            <a href="https://drive.google.com/file/d/1NY87_z2ZG4lAOijiDplneB8TkOd5PKGq/view" target="_blank" class="btn-primary">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download Now
+            </a>
+        </header>
+
+        <section class="hero" data-aos="zoom-in" data-aos-duration="1000">
+            <h2>Automate Messaging<br>With Surgical Precision</h2>
+            <p>The lightweight powerhouse for intelligent, undetectable bulk messaging across modern web platforms.</p>
+
+            <div class="stats-container" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-item"><span class="stat-number" data-target="15000">0</span><span class="stat-label">Messages Daily</span></div>
+                <div class="stat-item"><span class="stat-number" data-target="42">0</span><span class="stat-label">ms Latency</span></div>
+                <div class="stat-item"><span class="stat-number" data-target="100">0</span><span class="stat-label">Stealth Score</span></div>
+            </div>
+
+            <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;" data-aos="fade-up" data-aos-delay="300">
+                <span class="platform-tag">Messenger</span>
+                <span class="platform-tag">WhatsApp Web</span>
+                <span class="platform-tag">Telegram Web</span>
+                <span class="platform-tag">Discord</span>
+            </div>
+
+            <!-- Middle Download Button -->
+            <div class="download-middle" data-aos="fade-up" data-aos-delay="400">
+                <a href="https://drive.google.com/file/d/1NY87_z2ZG4lAOijiDplneB8TkOd5PKGq/view" target="_blank" class="btn-primary" style="font-size:1.15rem; padding:18px 52px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download ShepuAutoM Now
+                </a>
+            </div>
+        </section>
+
+        <section class="glass-panel" data-aos="fade-up" data-aos-duration="900">
+            <div style="text-align:center; margin-bottom:56px;">
+                <h2 style="font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight:900; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Core Superpowers
+                </h2>
+                <p style="color:var(--text-muted); font-size:1.18rem; max-width:640px; margin:16px auto 0;">Engineered for speed, stealth, and scale.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-right" data-aos-delay="100">
+                    <span class="icon">⚡</span>
+                    <h3>Single Blast</h3>
+                    <p>Fire messages with surgical timing — perfect for announcements, alerts, or high-volume drops.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="180">
+                    <span class="icon">🔄</span>
+                    <h3>Sequence Engine</h3>
+                    <p>Chain messages with conditional logic, random delays, and dynamic variables — human-like conversations at scale.</p>
+                </div>
+                <div class="feature-card" data-aos="fade-left" data-aos-delay="260">
+                    <span class="icon">🛡️</span>
+                    <h3>Stealth Mode</h3>
+                    <p>Advanced typing simulation, jitter, and anti-pattern detection — stay under the radar indefinitely.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-panel" data-aos="fade-up" data-aos-duration="900">
+            <div style="text-align:center; margin-bottom:40px;">
+                <h2 style="font-size:2.6rem; font-weight:800;"></h2>
+                <p style="color:var(--text-muted); font-size:1.15rem;">2-minute setup. Zero fluff.</p>
+            </div>
+            <div style="border-radius:28px; overflow:hidden; box-shadow: var(--glow);">
+                <div style="position:relative; padding-bottom:56.25%; height:0;">
+                    <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/lpdab4LxaXo" title="ShepuAutoM Demo" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Download Section -->
+        <div class="download-bottom" data-aos="fade-up" data-aos-delay="200">
+            <h3>Ready to Start Automating?</h3>
+            <p style="color:var(--text-muted); margin-bottom:32px; font-size:1.1rem;">Get ShepuAutoM today and experience precision messaging like never before.</p>
+            <a href="https://drive.google.com/file/d/1NY87_z2ZG4lAOijiDplneB8TkOd5PKGq/view" target="_blank" class="btn-primary" style="font-size:1.2rem; padding:20px 60px;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download Now – Free
+            </a>
+        </div>
+
+        <footer style="text-align:center; padding:80px 0; color:var(--text-muted); border-top:1px solid var(--border); font-size:0.95rem;">
+            <p>© 2026 ShepuAutoM Studio<br>Built for power users. Use with responsibility.</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 900, once: true, easing: 'ease-out-cubic' });
+
+        // Counter animation
+        const counters = document.querySelectorAll('.stat-number');
+        const speed = 180;
+        function animateCounters() {
+            counters.forEach(el => {
+                const target = +el.getAttribute('data-target');
+                let count = +el.innerText;
+                const increment = target / speed;
+                const update = () => {
+                    if (count < target) {
+                        count += increment;
+                        el.innerText = Math.ceil(count);
+                        requestAnimationFrame(update);
+                    } else {
+                        el.innerText = target + (target === 100 ? '' : '+');
+                    }
+                };
+                update();
+            });
+        }
+        const obs = new IntersectionObserver(([e]) => {
+            if (e.isIntersecting) animateCounters();
+        }, { threshold: 0.6 });
+        obs.observe(document.querySelector('.stats-container'));
+
+        // FAB scroll show
+        window.addEventListener('scroll', () => {
+            document.getElementById('fab').style.display = (window.scrollY > 500) ? 'flex' : 'none';
+        });
+    </script>
+</body>
+</html>
