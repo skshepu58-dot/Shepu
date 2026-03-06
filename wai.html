@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shepu Offline AI - Your Smart Companion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset & Variables */
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #4CAF50;
+            --bg-color: #0F172A;
+            --text-light: #F8FAFC;
+            --text-gray: #94A3B8;
+            --card-bg: #1E293B;
+            --section-title-color: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            font-family: 'Noto Sans Bengali', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Common Section Heading Style */
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--section-title-color);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 50px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), #00C9FF);
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+
+        /* Top Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(15, 23, 42, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .logo-container img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            transition: transform 0.5s ease;
+        }
+
+        .logo-container:hover img {
+            transform: rotate(360deg);
+        }
+
+        .logo-container h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #6C63FF, #00C9FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, var(--primary-color), #8B5CF6);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #8B5CF6, var(--primary-color));
+            transition: all 0.4s ease;
+            z-index: -1;
+            border-radius: 30px;
+        }
+
+        .download-btn:hover::before {
+            left: 0;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.4);
+        }
+
+        .download-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Ripple Animation */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes ripple-anim {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 5%;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+            color: var(--text-light);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            min-height: 60px;
+        }
+
+        /* Typing Cursor */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2rem;
+            background-color: #00C9FF;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 50px 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(40px);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            /* Transform dynamic via JS */
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateZ(30px); /* Enhanced 3D effect */
+            pointer-events: none;
+        }
+
+        .feature-card p {
+            color: var(--text-gray);
+            transform: translateZ(20px);
+            pointer-events: none;
+        }
+
+        .feature-details {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Audience & Compatibility Section */
+        .info-section {
+            background: linear-gradient(to right, rgba(108, 99, 255, 0.05), rgba(0, 201, 255, 0.05));
+            padding: 60px 5%;
+            text-align: center;
+            border-radius: 20px;
+            margin: 0 5% 50px 5%;
+            border: 1px solid rgba(108, 99, 255, 0.1);
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.6s ease;
+        }
+
+        .info-section.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .info-section h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .info-section p {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .highlight {
+            color: #00C9FF;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #00C9FF;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .highlight:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* --- NEW: Screenshots Section Styles --- */
+        .screenshots {
+            padding: 50px 5%;
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .screenshot-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            justify-items: center;
+            margin-top: 50px;
+        }
+
+        .screenshot-card {
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(40px);
+            max-width: 100%;
+
+            /* Prepare for 3D Tilt */
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .screenshot-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .screenshot-card:hover {
+            border-color: #00C9FF;
+            box-shadow: 0 15px 30px rgba(0, 201, 255, 0.2);
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+            transition: transform 0.4s ease;
+
+            /* Enhance 3D Pop */
+            transform: translateZ(10px);
+        }
+
+        .screenshot-card:hover img {
+             transform: translateZ(25px) scale(1.02);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px 5%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #0B1120;
+        }
+
+        .footer-content {
+            margin-bottom: 30px;
+        }
+
+        /* Animations */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            .hero {
+                padding: 80px 5% 40px;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .screenshot-container {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 20px;
+            }
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="navbar">
+        <div class="logo-container">
+            <img src="soa.png" alt="Shepu Offline AI Logo" onerror="this.src='https://via.placeholder.com/50/6C63FF/FFFFFF?text=AI'">
+            <h1>Shepu Offline AI</h1>
+        </div>
+        <a href="https://drive.google.com/uc?export=download&id=1r2y-O87rSHQz3KeqLdIjN2sQGW84PlRC" target="_blank" class="download-btn">Download Now</a>
+    </header>
+
+    <section class="hero">
+        <h2>আপনার স্মার্ট ও বন্ধুসুলভ AI সঙ্গী</h2>
+        <p><span id="typed-text"></span><span class="cursor"></span></p>
+
+        <a href="https://drive.google.com/uc?export=download&id=1r2y-O87rSHQz3KeqLdIjN2sQGW84PlRC" target="_blank" class="download-btn" style="padding: 15px 40px; font-size: 1.2rem;">Download for Windows</a>
+    </section>
+
+    <h2 class="section-title">ফিচারসমূহ</h2>
+    <section class="features">
+        <div class="feature-card">
+            <h3>🗣️ বহুভাষিক সাপোর্ট</h3>
+            <p>বাংলা, বাংলিশ (Banglish) এবং ইংরেজি—এই ৩টি ভাষাতেই Shepu AI এর সাথে অনায়াসে কথা বলুন।</p>
+            <div class="feature-details">এই ফিচারটি আপনাকে আপনার পছন্দের ভাষায় নিরবচ্ছিন্ন যোগাযোগের সুবিধা দেয়, যাতে আপনি আরও স্বাচ্ছন্দ্যবোধ করেন।</div>
+        </div>
+        <div class="feature-card">
+            <h3>💬 রিয়েল-টাইম ফিলিংস</h3>
+            <p>লাইভ চ্যাটে একদম সামনাসামনি বসে কথা বলার মতো ন্যাচারাল ফিলিংস পাবেন।</p>
+            <div class="feature-details">রিয়েল-টাইম রেসপন্স এবং এমোশনাল ইন্টেলিজেন্সের মাধ্যমে এটি একটি সত্যিকারের কথোপকথনের অভিজ্ঞতা প্রদান করে।</div>
+        </div>
+        <div class="feature-card">
+            <h3>🔊 টেক্সট-টু-স্পিচ (TTS)</h3>
+            <p>যেকোনো কিছু বাংলা বা ইংরেজিতে টাইপ করুন, Shepu AI তা আপনাকে পড়ে শোনাবে।</p>
+            <div class="feature-details">এটি অডিও ফিডব্যাক প্রদান করে, যা লার্নিং বা অ্যাক্সেসিবিলিটির জন্য আদর্শ।</div>
+        </div>
+        <div class="feature-card">
+            <h3>🧮 সুপার ক্যালকুলেটর</h3>
+            <p>ক্যালকুলেটরের মতো দ্রুত যেকোনো জটিল হিসাব-নিকাশ করে দিতে পারে এক সেকেন্ডে।</p>
+            <div class="feature-details">জটিল গণিত থেকে শুরু করে দৈনন্দিন হিসাব—সবকিছু তাত্ক্ষণিকভাবে সমাধান করে।</div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <h3>কাদের জন্য এই অ্যাপ?</h3>
+        <p>যাদের কথা বলার মতো ভালো বন্ধু বা মানুষ নেই, যারা একা ফিল করেন, যে সকল স্টুডেন্টরা নতুন কিছু শিখে জ্ঞানী হতে চান—তাদের সবার জন্যই <span class="highlight">Shepu Offline AI</span> বিশেষভাবে তৈরি করা হয়েছে।</p>
+
+        <br>
+
+        <h3>💻 ডিভাইস সাপোর্ট</h3>
+        <p>অ্যাপটি স্পেশালি <strong>উইন্ডোজ (Windows)</strong> পিসির জন্য তৈরি করা হয়েছে। অন্যান্য ডিভাইস (Android/iOS/Mac) ইউজারদের আমাদের <strong>ওয়েব ভার্সন</strong> ব্যবহার করার জন্য অনুরোধ করা হচ্ছে।</p>
+    </section>
+
+    <section class="screenshots" id="demo">
+        <h2 class="section-title">অ্যাপের ডেমো স্ক্রিনশট</h2>
+        <div class="screenshot-container">
+            <div class="screenshot-card">
+                <img src="d1.png" alt="Shepu AI Demo 1" onerror="this.src='https://via.placeholder.com/600x400/1E293B/94A3B8?text=Demo+1'">
+            </div>
+            <div class="screenshot-card">
+                <img src="d2.png" alt="Shepu AI Demo 2" onerror="this.src='https://via.placeholder.com/600x400/1E293B/94A3B8?text=Demo+2'">
+            </div>
+            <div class="screenshot-card">
+                <img src="d3.png" alt="Shepu AI Demo 3" onerror="this.src='https://via.placeholder.com/600x400/1E293B/94A3B8?text=Demo+3'">
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <h2 style="margin-bottom: 20px; color: var(--text-light);">আজই আপনার নতুন AI বন্ধুর সাথে যুক্ত হোন</h2>
+            <a href="https://drive.google.com/uc?export=download&id=1r2y-O87rSHQz3KeqLdIjN2sQGW84PlRC" target="_blank" class="download-btn">Download Shepu AI</a>
+        </div>
+        <p style="color: var(--text-gray); margin-top: 30px;">&copy; 2026 Shepu Offline AI. All rights reserved.</p>
+    </footer>
+
+    <!-- Modal for Image Zoom -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        // --- EXISTING JS ---
+
+        // 1. AI Typing Effect for Hero Section
+        const text = "Friendly Chat, Calculation, এবং Entertainment—সবকিছু এখন একটি অফলাইন অ্যাপে। কথা বলার মানুষ নেই? Shepu AI আছে আপনার পাশে!";
+        const speed = 40; // typing speed in milliseconds
+        let i = 0;
+
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typed-text").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        window.onload = () => {
+            setTimeout(typeWriter, 500);
+        };
+
+        // 2. Scroll Reveal Animations (Updated to include screenshots)
+        const observerOptions = {
+            threshold: 0.1, // Trigger slightly earlier
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Target all cards and sections for reveal
+        document.querySelectorAll('.feature-card, .info-section, .screenshot-card').forEach((el, index) => {
+            // Add stagger delay to cards within the same container
+            const container = el.parentElement;
+            if(container.classList.contains('features') || container.classList.contains('screenshot-container')) {
+                 el.style.transitionDelay = `${(index % 4) * 0.15}s`; // Max 4 items stagger
+            }
+            observer.observe(el);
+        });
+
+        // 3. Header Shrink on Scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                header.style.padding = '10px 5%';
+                header.style.background = 'rgba(15, 23, 42, 0.95)';
+            } else {
+                header.style.padding = '20px 5%';
+                header.style.background = 'rgba(15, 23, 42, 0.8)';
+            }
+        });
+
+        // 4. Button Click Ripple Effect
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Remove existing ripples if quick clicking
+                const existingRipple = this.querySelector('.ripple');
+                if (existingRipple) existingRipple.remove();
+
+                let rect = e.target.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
+
+                let ripple = document.createElement('span');
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // --- UPDATED JS: Applied 3D Tilt to both Features and Screenshots ---
+
+        const applyTilt = (selector, maxTiltX, maxTiltY, resetColor) => {
+            document.querySelectorAll(selector).forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    let rect = card.getBoundingClientRect();
+                    let x = e.clientX - rect.left;
+                    let y = e.clientY - rect.top;
+                    let centerX = rect.width / 2;
+                    let centerY = rect.height / 2;
+
+                    let rotateX = ((y - centerY) / centerY) * -maxTiltX;
+                    let rotateY = ((x - centerX) / centerX) * maxTiltY;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+                    // Border color reset handled by CSS transition usually,
+                    // but if you set it in JS move, you must reset in JS leave
+                    // card.style.borderColor = resetColor;
+                });
+            });
+        };
+
+        // Apply distinct tilt levels
+        applyTilt('.feature-card', 10, 10, 'rgba(255, 255, 255, 0.05)');
+        applyTilt('.screenshot-card', 7, 7, 'rgba(255, 255, 255, 0.05)'); // Slightly less tilt for large images
+
+        // New: Toggle Feature Details on Click
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const details = card.querySelector('.feature-details');
+                if (details.style.display === 'block') {
+                    details.style.display = 'none';
+                } else {
+                    // Hide all other details
+                    document.querySelectorAll('.feature-details').forEach(d => d.style.display = 'none');
+                    details.style.display = 'block';
+                }
+            });
+        });
+
+        // New: Modal for Screenshot Zoom
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        var span = document.getElementsByClassName("close")[0];
+
+        document.querySelectorAll('.screenshot-card img').forEach(img => {
+            img.addEventListener('click', function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            });
+        });
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Close modal on click outside image
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
