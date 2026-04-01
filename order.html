@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional instant order portal — WhatsApp, Messenger &amp; Gmail. Secure, reliable, and efficient.">
+    <title>Order Portal | Smart Selection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Poppins:wght@500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+    <style>
+        :root {
+            --primary-green: #25D366;
+            --primary-blue: #0084FF;
+            --primary-red: #EA4335;
+            --text-dark: #1a2533;
+            --text-light: #64748b;
+            --border-light: #e2e8f0;
+        }
+      
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+      
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+      
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 460px;
+            padding: 48px 36px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06),
+                        0 4px 12px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            border: 1px solid var(--border-light);
+            position: relative;
+        }
+      
+        .header {
+            margin-bottom: 40px;
+        }
+      
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--text-dark);
+            letter-spacing: -0.8px;
+            margin-bottom: 6px;
+        }
+      
+        .subtitle {
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.5;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+      
+        .main-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            min-height: 58px;
+        }
+      
+        .main-btn i {
+            margin-right: 14px;
+            font-size: 26px;
+            width: 28px;
+        }
+      
+        .main-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+      
+        .whatsapp-btn { background: var(--primary-green); }
+        .messenger-btn { background: var(--primary-blue); }
+        .gmail-btn { background: var(--primary-red); }
+      
+        .agent-panel {
+            display: none;
+            margin-top: 10px;
+            padding: 24px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            animation: fadeIn 0.3s ease forwards;
+        }
+      
+        .agent-panel.active {
+            display: block;
+        }
+      
+        .agent-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+      
+        .agent-link {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            margin-bottom: 10px;
+            background: #ffffff;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 16px;
+            font-weight: 600;
+            min-height: 58px;
+        }
+      
+        .agent-link:last-child {
+            margin-bottom: 0;
+        }
+      
+        .agent-link:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transform: translateY(-1px);
+        }
+      
+        .agent-link i {
+            margin-left: auto;
+            color: #94a3b8;
+            font-size: 18px;
+        }
+      
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+      
+        .footer-note {
+            margin-top: 32px;
+            font-size: 13px;
+            color: var(--text-light);
+            opacity: 0.85;
+        }
+      
+        .main-btn:focus-visible,
+        .agent-link:focus-visible {
+            outline: 3px solid rgba(16, 185, 129, 0.4);
+            outline-offset: 4px;
+        }
+      
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 15px;
+            font-weight: 500;
+            padding: 10px 16px;
+            border-radius: 9999px;
+            background: #f8fafc;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+      
+        .back-button:hover {
+            background: #e2e8f0;
+            color: var(--text-dark);
+            transform: translateY(-1px);
+        }
+      
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+          
+            .container {
+                padding: 36px 24px;
+                border-radius: 18px;
+                max-width: 100%;
+            }
+          
+            h1 {
+                font-size: 24px;
+            }
+          
+            .subtitle {
+                font-size: 14.5px;
+            }
+          
+            .main-btn {
+                padding: 18px 22px;
+                font-size: 16.5px;
+                min-height: 56px;
+                margin-bottom: 14px;
+            }
+          
+            .main-btn i {
+                font-size: 24px;
+                margin-right: 12px;
+            }
+          
+            .agent-panel {
+                padding: 20px;
+            }
+          
+            .agent-link {
+                padding: 16px 20px;
+                font-size: 15.5px;
+                min-height: 54px;
+            }
+          
+            .footer-note {
+                margin-top: 28px;
+                font-size: 12.5px;
+            }
+            .back-button {
+                padding: 8px 14px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+       
+        <div style="text-align: left; margin-bottom: 24px;">
+            <a href="https://shepu1.github.io/s/Buy.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back
+            </a>
+        </div>
+        <div class="header">
+            <h1>Order Portal</h1>
+            <p class="subtitle">Select your preferred channel for instant, secure order placement.<br>Professional support • 24/7 availability</p>
+        </div>
+        
+        <button type="button" id="wa-btn" class="main-btn whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+            Order via WhatsApp
+        </button>
+        <div id="wa-agents" class="agent-panel">
+            <div class="agent-panel-header">
+                <span>WhatsApp Agents</span>
+                <i class="fab fa-whatsapp" style="color: #25D366; font-size: 18px;"></i>
+            </div>
+            <a href="https://wa.me/8801820970561" target="_blank" rel="noopener noreferrer" class="agent-link">
+                Agent 1
+                <i class="fas fa-external-link-alt"></i>
+            </a>
+            <a href="https://wa.me/8801757143424" target="_blank" rel="noopener noreferrer" class="agent-link">
+                Agent 2
+                <i class="fas fa-external-link-alt"></i>
+            </a>
+            <a href="https://wa.me/8801767443695" target="_blank" rel="noopener noreferrer" class="agent-link">
+                Agent 3
+                <i class="fas fa-external-link-alt"></i>
+            </a>
+        </div>
+
+        <button type="button" id="ms-btn" class="main-btn messenger-btn">
+            <i class="fab fa-facebook-messenger"></i>
+            Order via Messenger
+        </button>
+        <div id="ms-agents" class="agent-panel">
+            <div class="agent-panel-header">
+                <span>Messenger Agents</span>
+                <i class="fab fa-facebook-messenger" style="color: #0084FF; font-size: 18px;"></i>
+            </div>
+            <a href="https://www.facebook.com/shareharjan.shepu.2024" target="_blank" rel="noopener noreferrer" class="agent-link">
+                Agent 1 • Shepu
+                <i class="fas fa-external-link-alt"></i>
+            </a>
+            <a href="https://www.facebook.com/momtazul.islam.sohan" target="_blank" rel="noopener noreferrer" class="agent-link">
+                Agent 2 • Sohan
+                <i class="fas fa-external-link-alt"></i>
+            </a>
+            <a href="https://www.facebook.com/malek.ahmed.661644" target="_blank" rel="noopener noreferrer" class="agent-link">
+                Agent 3 • Malek
+                <i class="fas fa-external-link-alt"></i>
+            </a>
+        </div>
+
+        <button type="button" id="gmail-btn" class="main-btn gmail-btn">
+            <i class="fas fa-envelope"></i>
+            Order via Gmail
+        </button>
+        <div id="gmail-agents" class="agent-panel">
+            <div class="agent-panel-header">
+                <span>Gmail Support</span>
+                <i class="fas fa-envelope" style="color: #EA4335; font-size: 18px;"></i>
+            </div>
+            <div style="padding: 16px 20px; background: #ffffff; border-radius: 12px; border: 1px solid var(--border-light); text-align: center; font-size: 15px; color: var(--text-dark); user-select: all;">
+                shepu9462@gmail.com
+            </div>
+            <p style="font-size: 13px; color: #64748b; text-align: center; margin-top: 14px; line-height: 1.4;">
+                Copy the email above and send your order details from your email app
+            </p>
+        </div>
+        
+        <div class="footer-note">
+            Your information is secure • Orders processed instantly
+        </div>
+    </div>
+
+    <script>
+        function togglePanel(panelId) {
+            const allPanels = document.querySelectorAll('.agent-panel');
+            const targetPanel = document.getElementById(panelId);
+            
+            const wasActive = targetPanel.classList.contains('active');
+            
+            allPanels.forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            if (!wasActive) {
+                targetPanel.classList.add('active');
+            }
+        }
+        
+        function initialize() {
+            document.getElementById('wa-btn').addEventListener('click', () => {
+                togglePanel('wa-agents');
+            });
+          
+            document.getElementById('ms-btn').addEventListener('click', () => {
+                togglePanel('ms-agents');
+            });
+          
+            document.getElementById('gmail-btn').addEventListener('click', () => {
+                togglePanel('gmail-agents');
+            });
+        }
+      
+        window.addEventListener('load', initialize);
+    </script>
+</body>
+</html>
