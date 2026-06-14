@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Arobi - A premium digital sanctuary for faith, lifestyle, and beauty.">
+    <title>Arobi • Digital Sanctuary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+
+        :root {
+            --purple-primary: #7c3aed;
+        }
+
+        * {
+            transition-property: color, background-color, border-color, transform, opacity, box-shadow;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a0528; }
+        ::-webkit-scrollbar-thumb {
+            background: #7c3aed;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #9333ea; }
+
+        .tail-container * { font-family: 'Inter', sans-serif; }
+        .heading-font { font-family: 'Playfair Display', serif; }
+
+        .hero-bg {
+            background: radial-gradient(circle at top right, #6b21a8 0%, #2e0a4a 40%, #1a0528 100%);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 60px -12px rgba(124, 58, 237, 0.4);
+            border-color: rgba(192, 38, 211, 0.6);
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(to right, #a855f7, #ec4899);
+            z-index: 100;
+        }
+
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #a855f7, #ec4899);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 5, 40, 0.8);
+        }
+
+        #typewriter::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+            margin-left: 4px;
+            color: #a855f7;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="tail-container bg-[#1a0528] text-white antialiased selection:bg-purple-500 selection:text-white overflow-x-hidden">
+
+    <div id="scrollProgress" class="scroll-progress w-0"></div>
+
+    <nav class="fixed w-full z-50 nav-blur border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-xl flex items-center justify-center font-bold text-lg shadow-lg group-hover:rotate-12 group-hover:scale-110 transition-all">
+                    A
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight heading-font">Arobi</h1>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                <a href="#about" class="nav-link hover:text-white transition-colors">Overview</a>
+                <a href="#values" class="nav-link hover:text-white transition-colors">Our Values</a>
+                <a href="#channels" class="nav-link hover:text-white transition-colors">Network</a>
+                <a href="#connect" class="nav-link hover:text-white transition-colors">Connect</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="#channels" class="hidden md:flex px-6 py-2 bg-white text-[#1a0528] text-sm font-bold rounded-full hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-purple-500/40">
+                    Explore Network
+                </a>
+                <button onclick="toggleMobileMenu()" class="md:hidden w-12 h-10 flex items-center justify-center text-xs font-bold bg-white/10 rounded-lg hover:bg-white/20 transition-all">
+                    <span id="menuIcon">Menu</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden glass-panel border-t border-white/5 px-6 py-6 absolute w-full animate-in fade-in slide-in-from-top-4">
+            <div class="flex flex-col gap-4 text-base font-medium">
+                <a href="#about" onclick="toggleMobileMenu()">Overview</a>
+                <a href="#values" onclick="toggleMobileMenu()">Our Values</a>
+                <a href="#channels" onclick="toggleMobileMenu()">Network</a>
+                <a href="#connect" onclick="toggleMobileMenu()">Connect</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-bg min-h-screen flex items-center relative overflow-hidden pt-20">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10 py-20">
+            <div class="space-y-8" data-aos="fade-right" data-aos-duration="1000">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-xs font-medium text-purple-300">
+                    <div class="w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"></div>
+                    Premium Digital Experience
+                </div>
+
+                <h1 class="text-6xl md:text-8xl font-bold leading-[1.1] tracking-tight heading-font min-h-[1.2em]">
+                    <span id="typewriter" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400"></span>
+                </h1>
+
+                <p class="text-lg md:text-xl text-gray-400 max-w-lg leading-relaxed font-light">
+                    A sophisticated platform uniting faith, lifestyle, and aesthetic beauty. Discover our curated network of inspiring creators.
+                </p>
+
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#channels" class="px-8 py-4 bg-white text-black font-semibold rounded-full hover:scale-110 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition-all">
+                        View Network
+                    </a>
+                    <a href="#about" class="px-8 py-4 border border-white/20 text-white font-medium rounded-full hover:bg-white/5 transition-all">
+                        Discover More
+                    </a>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex justify-center relative" data-aos="zoom-in-left" data-aos-duration="1200">
+                <div class="w-[400px] h-[500px] glass-panel rounded-[2.5rem] p-8 flex flex-col justify-between floating relative z-10 border-t border-l border-white/20 shadow-2xl">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center font-bold">YT</div>
+                        <h3 class="text-2xl font-bold heading-font">Premium Content Delivery</h3>
+                        <p class="text-sm text-gray-400">Seamless integration of your favorite digital creators in one unified ecosystem.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="h-16 w-full bg-white/5 rounded-2xl flex items-center px-4 gap-4 border border-white/5 hover:bg-white/10 transition-colors cursor-default">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse"></div>
+                            <div class="flex-1">
+                                <div class="h-2 w-24 bg-white/20 rounded mb-2"></div>
+                                <div class="h-2 w-16 bg-white/10 rounded"></div>
+                            </div>
+                        </div>
+                        <div class="h-16 w-full bg-white/5 rounded-2xl flex items-center px-4 gap-4 border border-white/5 hover:bg-white/10 transition-colors cursor-default">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-400 to-orange-400"></div>
+                            <div class="flex-1">
+                                <div class="h-2 w-32 bg-white/20 rounded mb-2"></div>
+                                <div class="h-2 w-20 bg-white/10 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-purple-600/40 rounded-full blur-[100px]"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 border-y border-white/5 glass-panel relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div id="statsContainer" class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/10 text-center">
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-4xl font-bold text-purple-400 mb-1 counter" data-target="3">0</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider">Exclusive Channels</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl font-bold text-fuchsia-400 mb-1 counter" data-target="100">0</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider">Curated Content %</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-4xl font-bold text-pink-400 mb-1">24/7</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider">Inspiration</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="400">
+                    <div class="text-4xl font-bold text-white mb-1">Global</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider">Community</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-32 bg-[#12031d] relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-16 items-center">
+            <div class="md:w-1/2" data-aos="fade-right">
+                <div class="text-purple-500 text-xs font-bold tracking-[0.2em] uppercase mb-4">Corporate Overview</div>
+                <h2 class="text-4xl md:text-5xl font-bold leading-tight heading-font mb-6">Redefining the digital<br>content experience.</h2>
+                <div class="space-y-6 text-gray-400 font-light text-lg">
+                    <p>Arobi is a meticulously crafted digital platform designed to centralize premium content. We bridge the gap between spiritual lifestyle and modern aesthetics.</p>
+                    <p>By curating top-tier YouTube channels, we provide our audience with a seamless, distraction-free environment focused on personal growth, faith, and inner beauty.</p>
+                </div>
+                <div class="mt-10 pt-10 border-t border-white/10">
+                    <p class="text-sm text-gray-500 italic">"Design is not just what it looks like and feels like. Design is how it works."</p>
+                </div>
+            </div>
+            <div class="md:w-1/2 w-full" data-aos="fade-left">
+                <div class="aspect-square md:aspect-[4/3] rounded-3xl bg-gradient-to-br from-purple-900/50 to-black border border-white/10 relative overflow-hidden flex items-center justify-center group">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] group-hover:scale-110 transition-transform duration-1000"></div>
+                    <div class="text-center z-10">
+                        <div class="text-6xl mb-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 group-hover:tracking-widest transition-all duration-700">Arobi.</div>
+                        <div class="text-sm tracking-widest uppercase text-gray-400">Est. 2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="values" class="py-32 bg-[#1a0528]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-20" data-aos="fade-up">
+                <h2 class="text-4xl font-bold heading-font mb-4">Our Core Pillars</h2>
+                <p class="text-gray-400 font-light">The foundational elements that drive our platform's vision and content curation strategy.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-panel p-10 rounded-3xl hover:bg-white/[0.05] card-hover" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-xl flex items-center justify-center font-bold mb-6">01</div>
+                    <h3 class="text-xl font-semibold mb-3">Spiritual Growth</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Delivering content that nourishes the soul and provides daily Islamic reminders in a modern, accessible format.</p>
+                </div>
+                <div class="glass-panel p-10 rounded-3xl hover:bg-white/[0.05] card-hover" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-12 h-12 bg-fuchsia-500/20 text-fuchsia-400 rounded-xl flex items-center justify-center font-bold mb-6">02</div>
+                    <h3 class="text-xl font-semibold mb-3">Aesthetic Excellence</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Maintaining a high standard of visual presentation. We believe beautiful messages deserve beautiful delivery.</p>
+                </div>
+                <div class="glass-panel p-10 rounded-3xl hover:bg-white/[0.05] card-hover" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-12 h-12 bg-pink-500/20 text-pink-400 rounded-xl flex items-center justify-center font-bold mb-6">03</div>
+                    <h3 class="text-xl font-semibold mb-3">Community Focus</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Fostering a positive, uplifting environment for individuals seeking meaningful digital interaction.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="channels" class="py-32 bg-[#12031d] relative">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-16 md:flex justify-between items-end" data-aos="fade-right">
+                <div>
+                    <div class="text-purple-500 text-xs font-bold tracking-[0.2em] uppercase mb-4">The Network</div>
+                    <h2 class="text-4xl md:text-5xl font-bold heading-font">Featured Creators</h2>
+                </div>
+                <p class="text-gray-400 max-w-sm text-sm mt-6 md:mt-0 font-light">
+                    Explore our exclusively partnered channels, delivering consistent quality content directly to your screen.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-panel rounded-3xl p-8 card-hover group relative overflow-hidden" data-aos="flip-left" data-aos-delay="100">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-bl-full -z-10 group-hover:bg-purple-500/20 transition-colors"></div>
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center font-bold text-gray-300">YT</div>
+                        <span class="text-[10px] font-mono tracking-wider bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full border border-purple-500/30">ACTIVE</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">@muslim-i8l5p</h3>
+                    <p class="text-sm text-gray-400 mb-8 font-light leading-relaxed">Daily inspirational insights, profound knowledge, and eloquent reminders tailored for the modern Muslim.</p>
+                    <a href="https://www.youtube.com/@muslim-i8l5p" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-purple-400">
+                        View Channel <span class="group-hover:translate-x-2 transition-transform">→</span>
+                    </a>
+                </div>
+
+                <div class="glass-panel rounded-3xl p-8 card-hover group relative overflow-hidden" data-aos="flip-left" data-aos-delay="200">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/10 rounded-bl-full -z-10 group-hover:bg-fuchsia-500/20 transition-colors"></div>
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center font-bold text-gray-300">YT</div>
+                        <span class="text-[10px] font-mono tracking-wider bg-white/10 text-white px-3 py-1 rounded-full border border-white/20">POPULAR</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">@dearmuslims-t2w</h3>
+                    <p class="text-sm text-gray-400 mb-8 font-light leading-relaxed">A sanctuary for heartfelt messaging, providing guidance, warmth, and a strong sense of community.</p>
+                    <a href="https://www.youtube.com/@dearmuslims-t2w" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-fuchsia-400">
+                        View Channel <span class="group-hover:translate-x-2 transition-transform">→</span>
+                    </a>
+                </div>
+
+                <div class="glass-panel rounded-3xl p-8 card-hover group relative overflow-hidden" data-aos="flip-left" data-aos-delay="300">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-bl-full -z-10 group-hover:bg-pink-500/20 transition-colors"></div>
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center font-bold text-gray-300">YT</div>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">@MISTRYOFBEAUTY</h3>
+                    <p class="text-sm text-gray-400 mb-8 font-light leading-relaxed">Exploring the intersection of inner tranquility and outer elegance through an elegant Islamic perspective.</p>
+                    <a href="https://www.youtube.com/@MISTRYOFBEAUTY" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-pink-400">
+                        View Channel <span class="group-hover:translate-x-2 transition-transform">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="connect" class="py-32 bg-gradient-to-b from-[#1a0528] to-black relative">
+        <div class="max-w-4xl mx-auto px-6 text-center" data-aos="zoom-in">
+            <h2 class="text-4xl md:text-5xl font-bold heading-font mb-6">Stay Connected</h2>
+            <p class="text-gray-400 mb-12 text-lg font-light max-w-xl mx-auto">
+                Join our professional network. Subscribe to receive exclusive updates, latest content releases, and platform news directly to your inbox.
+            </p>
+
+            <div class="glass-panel rounded-full p-2 max-w-md mx-auto flex items-center border border-white/10 focus-within:border-purple-500/50 focus-within:ring-4 focus-within:ring-purple-500/10 transition-all">
+                <input type="email" id="emailInput" class="bg-transparent border-0 focus:ring-0 w-full px-6 py-4 text-white placeholder:text-gray-500 text-sm outline-none" placeholder="Enter your email address...">
+                <button id="subscribeBtn" onclick="subscribe()" class="px-8 py-4 bg-white text-black font-semibold text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all shrink-0 active:scale-95">
+                    Subscribe
+                </button>
+            </div>
+            <p id="statusMsg" class="h-6 mt-4 text-sm font-medium text-purple-400 opacity-0 transition-opacity"></p>
+        </div>
+    </section>
+
+    <footer class="bg-black text-gray-400 py-12 border-t border-white/10 text-sm">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-6 h-6 bg-white rounded flex items-center justify-center font-bold text-black text-[10px]">A</div>
+                <span class="font-semibold text-white">Arobi Digital</span>
+            </div>
+
+            <div class="flex gap-6">
+                <a href="#about" class="hover:text-white transition-colors">Overview</a>
+                <a href="#channels" class="hover:text-white transition-colors">Network</a>
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            </div>
+
+            <div class="text-xs">
+                &copy; 2026 Arobi. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800,
+            offset: 100
+        });
+
+        const typingText = "Curated Elegance.";
+        let charIndex = 0;
+        const typewriterElement = document.getElementById("typewriter");
+
+        function typeWriter() {
+            if (charIndex < typingText.length) {
+                typewriterElement.textContent += typingText.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', typeWriter);
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progress = document.getElementById('scrollProgress');
+            if(progress) progress.style.width = scrolled + '%';
+        });
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        if (counter.dataset.counted) return;
+                        counter.dataset.counted = "true";
+
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const increment = target / 50;
+
+                        const updateCount = () => {
+                            if (count < target) {
+                                count += increment;
+                                counter.innerText = Math.ceil(count);
+                                setTimeout(updateCount, 20);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCount();
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsGrid = document.getElementById('statsContainer');
+        if(statsGrid) statsObserver.observe(statsGrid);
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            icon.innerText = menu.classList.contains('hidden') ? 'Menu' : 'Close';
+        }
+
+        function subscribe() {
+            const input = document.getElementById('emailInput');
+            const btn = document.getElementById('subscribeBtn');
+            const msg = document.getElementById('statusMsg');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (emailRegex.test(input.value.trim())) {
+                input.value = '';
+                btn.innerText = 'Subscribed';
+                btn.classList.add('bg-purple-600', 'text-white');
+                btn.style.pointerEvents = 'none';
+                msg.innerText = 'Thank you for joining Arobi Digital.';
+                msg.style.opacity = '1';
+                msg.className = 'h-6 mt-4 text-sm font-medium text-purple-400 opacity-100 transition-opacity';
+                setTimeout(() => {
+                    btn.innerText = 'Subscribe';
+                    btn.classList.remove('bg-purple-600', 'text-white');
+                    btn.style.pointerEvents = 'auto';
+                    msg.style.opacity = '0';
+                }, 4000);
+            } else {
+                msg.innerText = 'Please enter a valid email address.';
+                msg.style.opacity = '1';
+                msg.className = 'h-6 mt-4 text-sm font-medium text-red-400 opacity-100 transition-opacity';
+            }
+        }
+    </script>
+</body>
+</html>
