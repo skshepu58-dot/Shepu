@@ -1,0 +1,70 @@
+window.config = {
+    WIDTH: 800,
+    HEIGHT: 600,
+    PLAY_WIDTH: 800,
+    PLAY_HEIGHT: 600,
+    PLAY_OFFSET_X: 0,
+    PLAY_OFFSET_Y: 0,
+    STEP: 30,
+    FPS: 15,
+
+    // Android / touch defaults
+    DEFAULT_CONTROL_MODE: "swipe",
+    DEFAULT_JOYSTICK_SIDE: "right",
+
+    WHITE: "rgb(240, 240, 240)",
+    BLACK: "rgb(10, 10, 15)",
+    RED: "rgb(255, 60, 60)",
+    GREEN: "rgb(0, 255, 150)",
+    BLUE: "rgb(0, 150, 255)",
+    DARK_GRAY: "rgb(30, 30, 40)",
+    LIGHT_GRAY: "rgb(180, 180, 200)",
+    PURPLE: "rgb(180, 100, 255)",
+    YELLOW: "rgb(255, 215, 0)",
+    CYAN: "rgb(0, 255, 255)",
+    GOLD: "rgb(212, 175, 55)",
+    NEON_GREEN: "rgb(57, 255, 20)",
+    NEON_BLUE: "rgb(0, 255, 255)",
+    DARK_NAVY: "rgb(10, 10, 25)",
+
+    SPECIAL_FOOD_SPAWN_CHANCE: 0.2,
+    SPECIAL_FOOD_DURATION: 5,
+
+    SHEPU_FOOD_SPAWN_CHANCE: 0.35,
+    SHEPU_FOOD_DURATION: 6,
+    SHEPU_FOOD_POINTS: 15,
+    CUT_FOOD_INTERVAL: 100,
+    CUT_FOOD_DURATION: 7,
+    TIME_ATTACK_DURATION: 60,
+
+    LEVEL_UP_SCORES: { 1: 0, 2: 200, 3: 800, 4: 2500, 5: 8000, 6: 25000, 7: 60000 },
+    OBSTACLE_COUNT_PER_LEVEL: 2,
+    BOSS_LEVEL_INTERVAL: 3,
+
+    SKIN_UNLOCKS: {
+        "classic": 0,
+        "dragon": 1000,
+        "robot": 5000
+    },
+
+    PARTICLE_COUNT: 20,
+    SHAKE_INTENSITY: 5,
+    SHAKE_DURATION: 200,
+
+    POWER_UP_DURATION: 9,
+    POWER_UP_SPAWN_CHANCE: 0.07,
+    POWER_UP_TYPES: ["ghost", "slowmo", "double"],
+
+    NIGHT_MODE_START_LEVEL: 3,
+    NIGHT_MODE_DURATION: 15,
+    NIGHT_MODE_INTERVAL: 45,
+    VISION_RADIUS: 200,
+
+    MATRIX_FOOD_SPAWN_CHANCE: 0.05,
+    MATRIX_FOOD_LIFETIME: 5,
+    MATRIX_EFFECT_DURATION: 10,
+
+    MOVING_OBSTACLE_START_LEVEL: 4,
+    MOVING_OBSTACLE_DURATION: 15,
+    MOVING_OBSTACLE_INTERVAL: 60
+};
