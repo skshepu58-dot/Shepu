@@ -1,3 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake (Shepus Snake) - Official Game Hub</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="snake.png">
+    <link rel="apple-touch-icon" href="snake.png">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Snake (Shepus Snake) - AAA-grade high-performance 60 FPS Snake game built in Python (PC), Flutter (Android), and JavaScript (Web Play). Created by Shareharjan Shepu.">
+    <meta name="keywords" content="Snake game, Shepus Snake, Python game, Flutter game, JavaScript web game, Shareharjan Shepu, Snake APK download, Windows Snake game">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Professional AAA Gaming Design System */
+        :root {
+            --bg-body: #060b08;
+            --bg-card: rgba(12, 22, 16, 0.75);
+            --bg-card-hover: rgba(18, 34, 24, 0.95);
+            --glass-border: rgba(0, 255, 135, 0.18);
+            --glass-glow: rgba(0, 255, 135, 0.12);
+            
+            --primary-emerald: #00ff87;
+            --primary-cyan: #00d2ff;
+            --accent-purple: #8b5cf6;
+            --dark-emerald: #0b291a;
+            --deep-green: #143826;
+            
+            --text-heading: #ffffff;
+            --text-body: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
+
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-pill: 9999px;
+
+            --shadow-neon: 0 0 35px rgba(0, 255, 135, 0.4);
+            --shadow-cyan: 0 0 30px rgba(0, 210, 255, 0.25);
+            --shadow-purple: 0 0 30px rgba(139, 92, 246, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Ambient Lights & Subdued Background Grid */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 10% 15%, rgba(0, 255, 135, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 20%, rgba(0, 210, 255, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 50% 85%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+        }
+
+        .grid-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image: 
+                linear-gradient(rgba(0, 255, 135, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 135, 0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Inline SVG Icon Utilities */
+        .svg-icon {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .svg-icon-lg {
+            width: 26px;
+            height: 26px;
+        }
+
+        /* Header Bar */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 11, 8, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 14px 0;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-frame {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            transition: transform 0.3s ease;
+        }
+
+        .brand-logo:hover .logo-frame {
+            transform: scale(1.08);
+        }
+
+        .logo-frame img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .brand-text h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .nav-ctas {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Buttons Styling - DOWNLOAD GAME AS PRIMARY FOCUS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 26px;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            font-size: 0.94rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+            outline: none;
+            white-space: nowrap;
+        }
+
+        /* High Focus Download Button */
+        .btn-download-primary {
+            background: linear-gradient(135deg, #00ff87 0%, #00b862 50%, #00d2ff 100%);
+            color: #02140a;
+            box-shadow: var(--shadow-neon);
+            position: relative;
+            overflow: hidden;
+            font-weight: 800;
+        }
+
+        .btn-download-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-download-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-download-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 255, 135, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* Secondary Try Now Button */
+        .btn-try-subtle {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-heading);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-try-subtle:hover {
+            background: rgba(0, 210, 255, 0.15);
+            border-color: var(--primary-cyan);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-heading);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 255, 135, 0.1);
+            border-color: var(--primary-emerald);
+            transform: translateY(-2px);
+        }
+
+        /* Device Detection Pill */
+        .device-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(0, 255, 135, 0.08);
+            border: 1px solid rgba(0, 255, 135, 0.25);
+            color: var(--primary-emerald);
+            margin-bottom: 24px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-emerald);
+            box-shadow: 0 0 10px var(--primary-emerald);
+            animation: pulseDot 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0 45px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--primary-emerald) 70%, var(--primary-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1.2px;
+        }
+
+        .hero-description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 36px;
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .btn-xl {
+            padding: 18px 42px;
+            font-size: 1.1rem;
+        }
+
+        .tag-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Section Styling */
+        .section-header {
+            text-align: center;
+            margin-bottom: 44px;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3.8vw, 2.5rem);
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* Platform Tech Architecture Cards */
+        .platforms-section {
+            margin: 30px 0 60px;
+        }
+
+        .platform-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .platform-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 32px 28px;
+            backdrop-filter: blur(12px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .platform-card.python::before { background: linear-gradient(90deg, #3776ab, var(--primary-emerald)); }
+        .platform-card.flutter::before { background: linear-gradient(90deg, #02569b, var(--primary-cyan)); }
+        .platform-card.javascript::before { background: linear-gradient(90deg, #f7df1e, var(--accent-purple)); }
+
+        .platform-card:hover {
+            transform: translateY(-6px);
+            background: var(--bg-card-hover);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        .platform-card.python:hover { border-color: var(--primary-emerald); }
+        .platform-card.flutter:hover { border-color: var(--primary-cyan); }
+        .platform-card.javascript:hover { border-color: var(--accent-purple); }
+
+        .tech-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            width: fit-content;
+        }
+
+        .tech-pill.python-pill { background: rgba(55, 118, 171, 0.15); color: #4b8bbe; border: 1px solid rgba(55, 118, 171, 0.35); }
+        .tech-pill.flutter-pill { background: rgba(2, 86, 155, 0.15); color: #38b6ff; border: 1px solid rgba(2, 86, 155, 0.35); }
+        .tech-pill.javascript-pill { background: rgba(247, 223, 30, 0.12); color: #f7df1e; border: 1px solid rgba(247, 223, 30, 0.35); }
+
+        .platform-card h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+        }
+
+        .platform-card p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+            margin-bottom: 60px;
+        }
+
+        .feature-box {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 26px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-emerald);
+            background: var(--bg-card-hover);
+        }
+
+        .feature-icon-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            background: rgba(0, 255, 135, 0.1);
+            color: var(--primary-emerald);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .feature-box h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .feature-box p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+        }
+
+        /* Controls Showcase Section */
+        .controls-card-wrapper {
+            background: linear-gradient(145deg, rgba(12, 22, 16, 0.85), rgba(6, 11, 8, 0.95));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 36px 30px;
+            margin-bottom: 60px;
+        }
+
+        .controls-inner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 28px;
+        }
+
+        .control-pane {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .control-pane h4 {
+            font-size: 1.15rem;
+            color: var(--primary-cyan);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kbd-pill {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--primary-emerald);
+            margin: 2px;
+            font-size: 0.88rem;
+        }
+
+        /* Screenshots Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .gallery-card {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            cursor: pointer;
+            height: 200px;
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.06);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 255, 135, 0.2);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+            color: #ffffff;
+        }
+
+        .gallery-card:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* FAQ Accordion */
+        .faq-accordion {
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+
+        .faq-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-q {
+            padding: 18px 24px;
+            font-size: 1.02rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-a {
+            padding: 0 24px 18px;
+            color: var(--text-muted);
+            font-size: 0.94rem;
+            display: none;
+        }
+
+        .faq-card.active .faq-a { display: block; }
+        .faq-card.active .faq-chevron { transform: rotate(180deg); color: var(--primary-emerald); }
+
+        /* Footer */
+        footer {
+            background: #030704;
+            border-top: 1px solid var(--glass-border);
+            padding: 45px 0 25px;
+            text-align: center;
+        }
+
+        .author-badge {
+            color: var(--primary-emerald);
+            font-weight: 700;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 7, 4, 0.9);
+            backdrop-filter: blur(16px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-dialog {
+            background: linear-gradient(145deg, #0b1810, #040805);
+            border: 2px solid var(--primary-emerald);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 520px;
+            padding: 34px 28px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 255, 135, 0.25);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover { color: var(--primary-emerald); }
+
+        /* --- SNAKE BODY SEGMENTS PROGRESS SYSTEM WITH NO GLOW & PERFECT HEAD CLIPPING --- */
+        .snake-progress-box-3d {
+            margin: 32px 0 24px;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .snake-track-3d {
+            height: 48px;
+            background: linear-gradient(180deg, #020704 0%, #0a180f 100%);
+            border: 2.5px solid var(--primary-emerald);
+            border-radius: var(--radius-pill);
+            position: relative;
+            box-shadow: 
+                inset 0 4px 10px rgba(0, 0, 0, 0.9),
+                0 0 25px rgba(0, 255, 135, 0.3);
+            overflow: visible;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        /* Dynamic Growing Body Container with Overflow Clip so it NEVER overshoots head */
+        .snake-body-segments-container {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            overflow: hidden;
+            gap: -8px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            width: 0%;
+            transition: width 0.12s linear;
+        }
+
+        /* Clean Body Segment Styling - NO GLOW */
+        .snake-body-part-img {
+            width: 50px;
+            height: 38px;
+            object-fit: fill;
+            flex-shrink: 0;
+            filter: none;
+        }
+
+        /* Snake Head Runner positioned dynamically */
+        .snake-runner-head-dynamic {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 52px;
+            height: 52px;
+            left: 0%;
+            z-index: 10;
+            transition: left 0.12s linear;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: snakeReal3dTilt 1s infinite alternate ease-in-out;
+        }
+
+        .snake-runner-head-dynamic img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        @keyframes snakeReal3dTilt {
+            0% { transform: translateY(-50%) rotate(-8deg) scale(0.98); }
+            100% { transform: translateY(-50%) rotate(8deg) scale(1.1); }
+        }
+
+        .percent-counter-3d {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-emerald);
+            margin-top: 14px;
+            text-shadow: 0 0 15px rgba(0, 255, 135, 0.5), 0 4px 10px rgba(0, 0, 0, 0.8);
+            letter-spacing: -0.5px;
+        }
+
+        .lightbox-img-full {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--primary-emerald);
+            box-shadow: 0 0 40px rgba(0, 255, 135, 0.35);
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .nav-wrapper { flex-direction: column; text-align: center; }
+            .nav-ctas { width: 100%; justify-content: center; }
+            .hero { padding: 40px 0 25px; }
+            .btn-xl { width: 100%; padding: 16px 24px; }
+            .controls-card-wrapper { padding: 24px 18px; }
+        }
+    </style>
+</head>
 <body>
-hello
-<body>
+
+    <div class="ambient-bg"></div>
+    <div class="grid-pattern"></div>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container nav-wrapper">
+            <a href="#" class="brand-logo">
+                <div class="logo-frame">
+                    <img src="snake.png" alt="Shepu's Snake Logo" onerror="this.src='s1.png'">
+                </div>
+                <div class="brand-text">
+                    <h1>Snake (Shepus Snake)</h1>
+                    <p>Python • Flutter • JavaScript</p>
+                </div>
+            </a>
+
+            <div class="nav-ctas">
+                <!-- Dynamic Download CTA - Main Focus -->
+                <button class="btn btn-download-primary" id="navDownloadBtn">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download Game
+                </button>
+
+                <!-- Try Now Web CTA - Secondary Focus -->
+                <a href="https://skshepu58-dot.github.io/Shepu/snake-git/index.html" target="_blank" class="btn btn-try-subtle" id="navTryNow">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Try Now (Web)
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Hero -->
+    <section class="hero">
+        <div class="container">
+            <!-- Dynamic Device Pill -->
+            <div class="device-badge-pill" id="devicePill">
+                <div class="status-dot"></div>
+                <span id="devicePillText">Detecting system environment...</span>
+            </div>
+
+            <h1 class="hero-title">High-Performance 60 FPS Arcade</h1>
+            <p class="hero-description">
+                Experience precision-crafted snake gameplay. Built in Python for Windows PC, native Flutter for Android Mobile, and pure JavaScript for instant Web Browser execution.
+            </p>
+
+            <div class="hero-actions">
+                <!-- Dynamic Download CTA - MAIN HERO FOCUS -->
+                <button class="btn btn-download-primary btn-xl" id="heroDownloadBtn">
+                    <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download Game (Free)
+                </button>
+
+                <!-- Try Now Web CTA - SECONDARY FOCUS -->
+                <a href="https://skshepu58-dot.github.io/Shepu/snake-git/index.html" target="_blank" class="btn btn-try-subtle btn-xl" id="heroTryNow">
+                    <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Try Now (Web Play)
+                </a>
+            </div>
+
+            <div class="tag-row">
+                <span class="tag-item">
+                    <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    60 FPS Smooth Render
+                </span>
+                <span class="tag-item">
+                    <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Boss Encounter Levels
+                </span>
+                <span class="tag-item">
+                    <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    PC Keyboard & Touch Controls
+                </span>
+                <span class="tag-item">
+                    <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                    In-Game Skin Shop
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Platform Architecture Section -->
+    <section class="platforms-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Multi-Platform Architecture</h2>
+                <p class="section-subtitle">Dedicated engines built for Windows, Android, and Web</p>
+            </div>
+
+            <div class="platform-cards-grid">
+                <!-- PC Python Card -->
+                <div class="platform-card python">
+                    <div>
+                        <div class="tech-pill python-pill">
+                            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            WINDOWS PC ENGINE
+                        </div>
+                        <h3>Built in Python</h3>
+                        <p>Engineered in Python for 60 FPS fluid rendering, low-latency keyboard responsiveness (WASD / Arrows), and realistic movement physics.</p>
+                    </div>
+                    <button class="btn btn-download-primary" onclick="openPcDownloadModal()" style="width: 100%;">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download Windows Build (.exe)
+                    </button>
+                </div>
+
+                <!-- Android Flutter Card -->
+                <div class="platform-card flutter">
+                    <div>
+                        <div class="tech-pill flutter-pill">
+                            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                            ANDROID MOBILE ENGINE
+                        </div>
+                        <h3>Built in Flutter</h3>
+                        <p>Native mobile application built with Flutter framework. Features gesture swipe controls and 2 customizable Virtual Joystick touch modes.</p>
+                    </div>
+                    <button class="btn btn-download-primary" onclick="startMobileBackgroundDownload()" style="width: 100%;">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download Android APK
+                    </button>
+                </div>
+
+                <!-- Web JavaScript Card -->
+                <div class="platform-card javascript">
+                    <div>
+                        <div class="tech-pill javascript-pill">
+                            <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            INSTANT WEB ENGINE
+                        </div>
+                        <h3>Built in JavaScript</h3>
+                        <p>Zero installation required. Instant HTML5 Canvas web game built with pure JavaScript. Play right inside your web browser on any device.</p>
+                    </div>
+                    <a href="https://skshepu58-dot.github.io/Shepu/snake-git/index.html" target="_blank" class="btn btn-try-subtle" style="width: 100%;">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        Try Now (Launch Web Game)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Grid -->
+    <section style="padding: 30px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Core Gameplay Systems</h2>
+                <p class="section-subtitle">Features engineered for competitive and casual gamers</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-icon-badge">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+                    <h4>60 FPS Performance</h4>
+                    <p>Optimized rendering loops ensuring fluid movement physics and ultra-fast reaction times.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-badge">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h4>Boss Battle Encounters</h4>
+                    <p>Unique boss fights at the end of every level with scaling difficulty patterns and high score rewards.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-badge">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                    </div>
+                    <h4>Level & EXP System</h4>
+                    <p>Earn experience points by consuming food, level up your rank, and unlock exclusive rewards.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-badge">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    </div>
+                    <h4>In-Game Coin Shop</h4>
+                    <p>Collect coins in matches to purchase custom background themes and vibrant snake skins.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-badge">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>
+                    </div>
+                    <h4>7-8 Food Varieties</h4>
+                    <p>Multiple food items yielding different score multipliers and EXP values for strategic gameplay.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-badge">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M10 2v7.31L4.75 20.5a2 2 0 0 0 1.7 3h11.1a2 2 0 0 0 1.7-3L14 9.31V2z"></path><line x1="8.5" y1="2" x2="15.5" y2="2"></line></svg>
+                    </div>
+                    <h4>Tactical Power-Ups</h4>
+                    <p>Collect items like Slow Motion, Ghost Mode, Double EXP, and Hack to gain critical combat advantages.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Controls Showcase -->
+    <section style="padding: 20px 0;">
+        <div class="container">
+            <div class="controls-card-wrapper">
+                <div class="section-header" style="margin-bottom: 16px;">
+                    <h2 class="section-title">Precision Controls</h2>
+                    <p class="section-subtitle">Designed for PC Keyboard and Mobile Touchscreens</p>
+                </div>
+
+                <div class="controls-inner-grid">
+                    <div class="control-pane">
+                        <h4>
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            PC Controls (Keyboard)
+                        </h4>
+                        <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.92rem;">Seamless dual direction control:</p>
+                        <div>
+                            <span class="kbd-pill">W</span> <span class="kbd-pill">A</span> <span class="kbd-pill">S</span> <span class="kbd-pill">D</span>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            Or <span class="kbd-pill">↑</span> <span class="kbd-pill">←</span> <span class="kbd-pill">↓</span> <span class="kbd-pill">→</span> Arrow Keys
+                        </div>
+                    </div>
+
+                    <div class="control-pane">
+                        <h4>
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                            Android Controls (Flutter Touch)
+                        </h4>
+                        <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.92rem;">3 customizable touch modes:</p>
+                        <ul style="list-style: none; color: var(--text-muted); font-size: 0.9rem;">
+                            <li style="margin-bottom: 6px;">• <strong>Swipe Gestures:</strong> Direct swipe direction input.</li>
+                            <li style="margin-bottom: 6px;">• <strong>Virtual Joystick Type 1:</strong> Floating directional pad.</li>
+                            <li>• <strong>Virtual Joystick Type 2:</strong> Fixed analog stick control.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Lightbox -->
+    <section style="padding: 30px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">In-Game Screenshots</h2>
+                <p class="section-subtitle">Click on image preview to expand lightbox</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-card" onclick="openLightbox('s1.png')">
+                    <img src="s1.png" alt="Gameplay Classic Mode">
+                    <div class="gallery-overlay">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                    </div>
+                </div>
+                <div class="gallery-card" onclick="openLightbox('s2.png')">
+                    <img src="s2.png" alt="Gameplay No Wall Mode">
+                    <div class="gallery-overlay">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                    </div>
+                </div>
+                <div class="gallery-card" onclick="openLightbox('s3.png')">
+                    <img src="s3.png" alt="Settings & Customization">
+                    <div class="gallery-overlay">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                    </div>
+                </div>
+                <div class="gallery-card" onclick="openLightbox('s4.png')">
+                    <img src="s4.png" alt="Leaderboard & EXP Stats">
+                    <div class="gallery-overlay">
+                        <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section style="padding: 30px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="faq-accordion">
+                <div class="faq-card" onclick="toggleFaq(this)">
+                    <div class="faq-q">
+                        <span>Is Snake (Shepus Snake) completely free to play?</span>
+                        <svg class="svg-icon faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-a">
+                        Yes. Snake (Shepus Snake) is 100% free to download and play with no paywalls. All skins and background themes are bought using coins earned strictly in-game.
+                    </div>
+                </div>
+
+                <div class="faq-card" onclick="toggleFaq(this)">
+                    <div class="faq-q">
+                        <span>What technologies power each version?</span>
+                        <svg class="svg-icon faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-a">
+                        The Windows PC version is built in <strong>Python</strong>, the Android version is built with <strong>Flutter</strong>, and the Web play version is built with <strong>JavaScript (HTML5 Canvas)</strong>.
+                    </div>
+                </div>
+
+                <div class="faq-card" onclick="toggleFaq(this)">
+                    <div class="faq-q">
+                        <span>How to launch the instant web version?</span>
+                        <svg class="svg-icon faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-a">
+                        Click the <strong>"Try Now (Web Play)"</strong> button at the top of the site to launch the browser version immediately.
+                    </div>
+                </div>
+
+                <div class="faq-card" onclick="toggleFaq(this)">
+                    <div class="faq-q">
+                        <span>Who created Snake (Shepus Snake)?</span>
+                        <svg class="svg-icon faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-a">
+                        The game was designed and engineered by <strong>Shareharjan Shepu</strong>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="margin-bottom: 24px;">
+                <button class="btn btn-download-primary" id="footerDownloadBtn" style="margin: 6px;">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download Game
+                </button>
+                <a href="https://skshepu58-dot.github.io/Shepu/snake-git/index.html" target="_blank" class="btn btn-try-subtle" style="margin: 6px;">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Try Web Play
+                </a>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.95rem;">
+                Snake (Shepus Snake) &copy; 2026. All rights reserved.
+            </p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 6px;">
+                Created by <span class="author-badge">Shareharjan Shepu</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+
+    <!-- Mobile Background Download Modal with Perfect Growing snake_body.png Progress Bar -->
+    <div class="modal-overlay" id="mobileDownloadModal">
+        <div class="modal-dialog">
+            <button class="modal-close" onclick="closeMobileDownloadModal()">&times;</button>
+
+            <h3 style="font-size: 1.55rem; color: #ffffff; margin-bottom: 6px;">
+                Downloading Android APK...
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Processing Flutter engine APK package in background.
+            </p>
+
+            <div class="snake-progress-box-3d">
+                <div class="snake-track-3d">
+                    <!-- Dynamic Growing Body Segments (Clipping mask keeps it behind head) -->
+                    <div class="snake-body-segments-container" id="snakeBodyContainer"></div>
+
+                    <!-- Snake Head Runner -->
+                    <div class="snake-runner-head-dynamic" id="snakeHeadRunner">
+                        <img src="snake.png" alt="Snake Head" onerror="this.src='s1.png'">
+                    </div>
+                </div>
+
+                <div class="percent-counter-3d" id="percentCounter">0%</div>
+                <div style="color: var(--primary-cyan); font-size: 0.9rem; margin-top: 8px; font-weight: 600;" id="statusText">Initializing APK download...</div>
+            </div>
+
+            <div id="completeAlert" style="display: none; margin-top: 15px;">
+                <div style="background: rgba(0, 255, 135, 0.12); border: 1.5px solid var(--primary-emerald); padding: 14px; border-radius: var(--radius-md); color: var(--primary-emerald); font-weight: 700; font-size: 0.96rem; box-shadow: 0 0 20px rgba(0, 255, 135, 0.2); margin-bottom: 12px;">
+                    Download Complete! APK saved to device.
+                </div>
+                
+                <!-- Play Protect / Installation Warning Guidance Box -->
+                <div style="background: rgba(255, 193, 7, 0.08); border: 1px dashed rgba(255, 193, 7, 0.4); padding: 12px 14px; border-radius: var(--radius-md); text-align: left; font-size: 0.85rem; color: #fcd34d; line-height: 1.45;">
+                    <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">
+                        <svg class="svg-icon" style="width:16px;height:16px;" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        ইনস্টলেশন সহায়িকা (Play Protect Alert)
+                    </div>
+                    অনেক সময় প্লে প্রটেক্ট বা ফোন ব্রাউজার থেকে ওয়ার্নিং দেখাতে পারে। চিন্তার কিছু নেই! ফাইলটি ইনস্টল করতে <strong>"Advanced" / "More Details"</strong>-এ ক্লিক করে <strong>"Install Anyway"</strong> বেছে নিন।
+                </div>
+
+                <button class="btn btn-secondary" onclick="closeMobileDownloadModal()" style="width: 100%; margin-top: 14px;">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PC Version Selection Modal -->
+    <div class="modal-overlay" id="pcDownloadModal">
+        <div class="modal-dialog">
+            <button class="modal-close" onclick="closePcDownloadModal()">&times;</button>
+
+            <h3 style="font-size: 1.5rem; color: #ffffff; margin-bottom: 6px;">
+                Windows PC Version
+            </h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                Select Python Engine Executable
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 14px; text-align: left;">
+                <div style="background: rgba(0, 255, 135, 0.04); border: 1.5px solid var(--primary-emerald); padding: 16px; border-radius: var(--radius-lg); position: relative;">
+                    <span style="position: absolute; top: 12px; right: 12px; background: var(--primary-emerald); color: #02140a; font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 10px;">RECOMMENDED</span>
+                    <h4 style="color: #fff; font-size: 1.1rem;">v1.1.0-latest (Recommended)</h4>
+                    <p style="color: var(--text-muted); font-size: 0.86rem; margin: 4px 0 12px;">60 FPS Python Engine build with Boss Battles & Sound fixes.</p>
+                    <a href="https://drive.usercontent.google.com/download?id=1ecm1wQDRa9touo9NnqzJuxi_geSoG4KF&export=download&authuser=0" download="snake.exe" target="_blank" class="btn btn-download-primary" style="width: 100%;">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download v1.1.0 (.exe)
+                    </a>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); padding: 16px; border-radius: var(--radius-lg);">
+                    <h4 style="color: #fff; font-size: 1.1rem;">v1.0.0 (Old Version)</h4>
+                    <p style="color: var(--text-muted); font-size: 0.86rem; margin: 4px 0 12px;">Classic lightweight release for older Windows PCs.</p>
+                    <a href="https://drive.usercontent.google.com/u/0/uc?id=1W7MyFYtQ9E8_AJWzT9BA8z9Eay64G4R9&export=download" download="snake.exe" target="_blank" class="btn btn-secondary" style="width: 100%;">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download v1.0.0 (.exe)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Zoom Modal -->
+    <div class="modal-overlay" id="lightboxModal" onclick="closeLightbox()">
+        <img class="lightbox-img-full" id="lightboxImg" src="" alt="Expanded Screenshot">
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        let isMobileDevice = false;
+        let downloadTimer = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            detectDevice();
+            setupEventListeners();
+        });
+
+        // Device Detection Logic (Requirement #3)
+        function detectDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+            const isMobileUA = mobileRegex.test(userAgent.toLowerCase());
+            const isSmallScreen = window.innerWidth <= 768;
+
+            isMobileDevice = isMobileUA || isSmallScreen;
+
+            const devicePillText = document.getElementById('devicePillText');
+
+            if (isMobileDevice) {
+                devicePillText.innerHTML = 'Mobile System Detected — Recommended: Direct Android APK (Flutter Engine)';
+            } else {
+                devicePillText.innerHTML = 'Windows System Detected — Recommended: PC Executable (Python 60FPS Engine)';
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('navDownloadBtn').addEventListener('click', handleDownloadClick);
+            document.getElementById('heroDownloadBtn').addEventListener('click', handleDownloadClick);
+            document.getElementById('footerDownloadBtn').addEventListener('click', handleDownloadClick);
+        }
+
+        function handleDownloadClick() {
+            if (isMobileDevice) {
+                startMobileBackgroundDownload();
+            } else {
+                openPcDownloadModal();
+            }
+        }
+
+        let activeApkBlobUrl = null;
+
+        // Mobile Background Download with Real Background Fetch + Blob Rename
+        function startMobileBackgroundDownload() {
+            const modal = document.getElementById('mobileDownloadModal');
+            const snakeBodyContainer = document.getElementById('snakeBodyContainer');
+            const snakeHeadRunner = document.getElementById('snakeHeadRunner');
+            const percentCounter = document.getElementById('percentCounter');
+            const statusText = document.getElementById('statusText');
+            const completeAlert = document.getElementById('completeAlert');
+
+            // Pre-fill snake body segments to cover full length
+            snakeBodyContainer.innerHTML = '';
+            for (let i = 0; i < 20; i++) {
+                const seg = document.createElement('img');
+                seg.src = 'snake_body.png';
+                seg.className = 'snake-body-part-img';
+                seg.alt = 'Snake Body Segment';
+                seg.onerror = function() { this.src = 's2.png'; };
+                snakeBodyContainer.appendChild(seg);
+            }
+
+            snakeBodyContainer.style.width = '0%';
+            snakeHeadRunner.style.left = '0%';
+            percentCounter.innerText = '0.000%';
+            statusText.innerText = 'Downloading APK in background...';
+            completeAlert.style.display = 'none';
+            modal.style.display = 'flex';
+
+            let visualProgress = 0.000;
+            let targetDownloadProgress = 22.500;
+            let isFetchComplete = false;
+            activeApkBlobUrl = null;
+
+            // Background Fetch - Downloads APK into browser memory while snake progress bar animates
+            fetch('https://files.catbox.moe/ahk2nj.apk')
+                .then(res => {
+                    if (!res.ok) throw new Error('Fetch failed');
+                    const totalBytes = parseInt(res.headers.get('content-length') || '0', 10);
+                    if (!res.body || totalBytes === 0) {
+                        return res.blob();
+                    }
+                    const reader = res.body.getReader();
+                    let loadedBytes = 0;
+                    const chunks = [];
+
+                    function read() {
+                        return reader.read().then(({ done, value }) => {
+                            if (done) {
+                                return new Blob(chunks, { type: 'application/vnd.android.package-archive' });
+                            }
+                            chunks.push(value);
+                            loadedBytes += value.length;
+                            targetDownloadProgress = Math.min((loadedBytes / totalBytes) * 100, 99.9);
+                            return read();
+                        });
+                    }
+                    return read();
+                })
+                .then(blob => {
+                    activeApkBlobUrl = URL.createObjectURL(blob);
+                    isFetchComplete = true;
+                    targetDownloadProgress = 100.000;
+                })
+                .catch(err => {
+                    console.warn('Background blob fetch fallback:', err);
+                    isFetchComplete = true;
+                    targetDownloadProgress = 100.000;
+                });
+
+            if (downloadTimer) clearInterval(downloadTimer);
+
+            // Ultra Fast High-Precision 3-Decimal Counter Ticker (30ms interval = 33 FPS)
+            downloadTimer = setInterval(() => {
+                if (visualProgress < targetDownloadProgress) {
+                    const diff = targetDownloadProgress - visualProgress;
+                    const step = Math.min(Math.random() * 1.5 + 0.35, diff);
+                    visualProgress += step;
+                } else if (isFetchComplete && visualProgress < 100) {
+                    visualProgress += 1.8;
+                }
+
+                if (visualProgress >= 100) {
+                    visualProgress = 100.000;
+                }
+
+                const targetPos = Math.min((visualProgress / 100) * 85, 85);
+                snakeHeadRunner.style.left = targetPos + '%';
+                snakeBodyContainer.style.width = (targetPos + 3) + '%';
+                percentCounter.innerText = visualProgress.toFixed(3) + '%';
+
+                if (visualProgress < 35) {
+                    statusText.innerText = 'Fetching snake.apk in background...';
+                } else if (visualProgress < 75) {
+                    statusText.innerText = 'Downloading Flutter 60 FPS package...';
+                } else if (visualProgress < 100) {
+                    statusText.innerText = 'Finalizing snake.apk installer...';
+                } else {
+                    statusText.innerText = 'Download Completed 100%';
+                }
+
+                if (visualProgress >= 100 && isFetchComplete) {
+                    clearInterval(downloadTimer);
+                    setTimeout(() => {
+                        triggerActualDownload();
+                        completeAlert.style.display = 'block';
+                    }, 500);
+                }
+            }, 30);
+        }
+
+        function triggerActualDownload() {
+            const finalUrl = activeApkBlobUrl || 'https://files.catbox.moe/ahk2nj.apk';
+            const a = document.createElement('a');
+            a.href = finalUrl;
+            a.download = 'snake.apk';
+            a.setAttribute('download', 'snake.apk');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function closeMobileDownloadModal() {
+            if (downloadTimer) clearInterval(downloadTimer);
+            document.getElementById('mobileDownloadModal').style.display = 'none';
+        }
+
+        function openPcDownloadModal() {
+            document.getElementById('pcDownloadModal').style.display = 'flex';
+        }
+
+        function closePcDownloadModal() {
+            document.getElementById('pcDownloadModal').style.display = 'none';
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxModal').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+
+        function toggleFaq(el) {
+            el.classList.toggle('active');
+        }
+
+        window.addEventListener('resize', detectDevice);
+    </script>
+</body>
+</html>
